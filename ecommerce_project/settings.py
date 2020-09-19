@@ -21,7 +21,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '56fi&j$1yd33cf$1%tupzhlngah17l(*)n^h8p*oh6icv93(h='
+SECRET_KEY = os.getenv('SECRET_KEY', 'Optional default value')
+#SECRET_KEY = '56fi&j$1yd33cf$1%tupzhlngah17l(*)n^h8p*oh6icv93(h='
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     'stripe',
     'crispy_forms',
     'widget_tweaks',
+     'storages',
 ]
 
 MIDDLEWARE = [
@@ -130,8 +133,8 @@ STATICFILES = [os.path.join(BASE_DIR, 'static')]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
 
-STRIPE_PUBLISHABLE_KEY = 'pk_test_RiCM8suKDhl1Tac3OiO7ju9e00kWlpjqmj'
-STRIPE_SECRET_KEY = 'sk_test_6qdkdMkRzEXFBw9jxQYkELJ700lXCSSYJ4'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51HEs4hJgthuxQG7T4BLcVv8TJxGeB8t5h38H5wBtBSvA24FeOJCP6IaW6MIbzCIZRmDddBxoYUmIbX2cLPpMdxGC00QeJtLV3K'
+STRIPE_SECRET_KEY = 'sk_test_51HEs4hJgthuxQG7TXCJ54IcXZmDkzq41LeRXTUMDuZoK1zoeshmpsSaUOA5YBmgdrcbf4GyPc0DWQ857lIlk8LLF00KE5CGBkf'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -144,3 +147,18 @@ EMAIL_HOST_PASSWORD = '1f0122cd0c47b429fed163a597cae209-898ca80e-af15bd1e'
 
 
 django_heroku.settings(locals())
+
+AWS_ACCESS_KEY_ID = 'AKIAXUEB6SMKBHVLCR4H '
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'jkalam'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, './static'),
+]
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
